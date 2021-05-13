@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { trigger } from './utilities'
 
 const matchKey = [
@@ -7,6 +8,7 @@ const matchKey = [
   'msMatchesSelector',
   'oMatchesSelector'].find(key => key in document.documentElement)
 
+/* eslint-disable */
 export class AbstractTheme {
   constructor (jsoneditor, options = { disable_theme_rules: false }) {
     this.jsoneditor = jsoneditor
@@ -388,7 +390,7 @@ export class AbstractTheme {
   getButton (text, icon, title) {
     const el = document.createElement('button')
     el.type = 'button'
-    this.setButtonText(el, text, icon, title)
+    this.setButtonText(el, text, icon, title, true)
     return el
   }
 
@@ -396,17 +398,18 @@ export class AbstractTheme {
     return this.getButton(text, icon, title)
   }
 
-  setButtonText (button, text, icon, title) {
+  setButtonText (button, text, icon, title, onlyicon) {
     /* Clear previous contents. https://jsperf.com/innerhtml-vs-removechild/37 */
     while (button.firstChild) {
       button.removeChild(button.firstChild)
     }
     if (icon) {
       button.appendChild(icon)
-      text = ` ${text}`
+      if (!onlyicon) {text = ` ${text}`}
     }
     if (!this.jsoneditor.options.iconlib || !this.jsoneditor.options.remove_button_labels || !icon) {
       const spanEl = document.createElement('span')
+      text = text || title || '.'
       spanEl.appendChild(document.createTextNode(text))
       button.appendChild(spanEl)
     }

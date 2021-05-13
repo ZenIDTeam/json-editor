@@ -2,7 +2,7 @@
 import { AbstractEditor } from '../editor.js'
 import { Validator } from '../validator.js'
 import { extend } from '../utilities.js'
-
+/* eslint-disable */
 export class MultipleEditor extends AbstractEditor {
   register () {
     if (this.editors) {
@@ -98,6 +98,19 @@ export class MultipleEditor extends AbstractEditor {
     }
 
     const editor = this.jsoneditor.getEditorClass(schema)
+
+    //Zenid update - start
+    //Nullable number/integer is solved via anyOf field [integer/number, null]. Here we are checking whether the schema contains anyOf; if yes, we use number (or integer) as a schema.type and schema.required is set to false 
+    if (schema.anyOf 
+        && schema.anyOf.some(item => item.type === "null") 
+        && schema.anyOf.some(item => item.type === "integer" || item.type === "number")
+    ) {
+        let innertype = schema.anyOf.filter(item => item.type !== "null")[0].type;
+        delete schema.anyOf;
+        schema.type = innertype;
+        schema.required = false;
+      }
+    //Zenid update - end
 
     this.editors[i] = this.jsoneditor.createEditor(editor, {
       jsoneditor: this.jsoneditor,

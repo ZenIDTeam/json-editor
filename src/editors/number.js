@@ -1,6 +1,6 @@
 import { StringEditor } from './string.js'
 import { isNumber } from '../utilities'
-
+/* eslint-disable */
 export class NumberEditor extends StringEditor {
   build () {
     super.build()
@@ -42,7 +42,14 @@ export class NumberEditor extends StringEditor {
     if (!this.dependenciesFulfilled) {
       return undefined
     }
-    const value = isNumber(this.value) ? parseFloat(this.value) : this.value
+    const value = isNumber(this.value) 
+      ? parseFloat(this.value) 
+      : this.value
+    //Zenid update - start
+    if (value === "") {
+      if (!this.isRequired()) return null;     //We need null to be returned. Otherwise default value on server site is used (and not null which we want).
+    }
+    //Zenid update - end      
     if (!this.jsoneditor.options.use_default_values && value === '') {
       return undefined
     }

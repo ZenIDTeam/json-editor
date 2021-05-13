@@ -1,7 +1,7 @@
 import { AbstractEditor } from '../editor.js'
 import { extend, hasOwnProperty, trigger } from '../utilities.js'
 import rules from './object.css.js'
-
+/* eslint-disable */
 export class ObjectEditor extends AbstractEditor {
   constructor (options, defaults, depth) {
     super(options, defaults)
@@ -1006,6 +1006,19 @@ export class ObjectEditor extends AbstractEditor {
       /* Add the property */
       const editor = this.jsoneditor.getEditorClass(schema)
 
+      //Zenid update - start
+      //Nullable number/integer is solved via anyOf field [integer/number, null]. Here we are checking whether the schema contains anyOf; if yes, we use number (or integer) as a schema.type and schema.required is set to false 
+      if (schema.anyOf 
+        && schema.anyOf.some(item => item.type === "null") 
+        && schema.anyOf.some(item => item.type === "integer" || item.type === "number")
+      ) {
+        let innertype = schema.anyOf.filter(item => item.type !== "null")[0].type;
+        delete schema.anyOf;
+        schema.type = innertype;
+        schema.required = false;
+      }
+      //Zenid update - end      
+
       const { max_depth: maxDepth } = this.jsoneditor.options
 
       this.editors[name] = this.jsoneditor.createEditor(editor, {
@@ -1086,7 +1099,10 @@ export class ObjectEditor extends AbstractEditor {
     )
     if (result && (this.jsoneditor.options.remove_empty_properties || this.options.remove_empty_properties)) {
       Object.keys(result).forEach(key => {
-        if (isEmpty(result[key])) {
+        //Zenid update - start: to ensure that zero or null is not deleted
+        /*if (result[key] === 0 || result[key] === null) return;*/
+        //Zenid update - end
+        if (isEmpty(result[key])) { // WAS !RESULT[KEY] - TODO IS OUR UPDATE STILL NEEDED, OR NOT?
           delete result[key]
         }
       })

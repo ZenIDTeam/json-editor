@@ -1,6 +1,6 @@
 import { SelectEditor } from './select.js'
 import { extend, hasOwnProperty } from '../utilities.js'
-
+/* eslint-disable */
 export class Select2Editor extends SelectEditor {
   setValue (value, initial) {
     if (this.select2_instance) {
@@ -26,6 +26,10 @@ export class Select2Editor extends SelectEditor {
 
       /* New items are allowed if option "tags" is true and type is "string" */
       this.newEnumAllowed = options.tags = !!options.tags && this.schema.type === 'string'
+
+      //Zenid update - start            
+      options.templateResult = this.renderItem;
+      //Zenid update - end
 
       this.select2_instance = window.jQuery(this.input).select2(options)
       this.select2v4 = hasOwnProperty(this.select2_instance.select2, 'amd')

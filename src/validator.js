@@ -1,6 +1,6 @@
 import { ipValidator } from './validators/ip-validator.js'
 import { extend, hasOwnProperty } from './utilities.js'
-
+/* eslint-disable */
 export class Validator {
   constructor (jsoneditor, schema, options, defaults) {
     this.jsoneditor = jsoneditor
@@ -50,6 +50,10 @@ export class Validator {
       },
       anyOf (schema, value, path) {
         const valid = schema.anyOf.some(e => !this._validateSchema(e, value, path).length)
+        /*note for Zenid: the validity of anyOf([integer/number,null]) is being changed here to ensure that the error messages will not be displayed in case of an empty value; the commented code not needed now, left here in case of possible future usage
+          if (schema.anyOf.some(item => item.type === "null") && schema.anyOf.some(item => item.type === "integer" || item.type === "number") && value === " ") {                                         
+              valid = true;
+          } else {*/                        
         if (!valid) {
           return [{
             path,
@@ -618,6 +622,11 @@ export class Validator {
   }
 
   _validateV3Required (schema, value, path) {
+    //Zenid update - start - selects with one value empty is not wrong with undefined value
+    if (typeof value === 'undefined' && schema.enum && schema.enum.some(item => item === "")) {
+      return [];
+    }
+    //Zenid update - end
     if (((typeof schema.required !== 'undefined' && schema.required === true) || (typeof schema.required === 'undefined' && this.jsoneditor.options.required_by_default === true)) && (schema.type !== 'info')) {
       return [{
         path,
@@ -846,7 +855,9 @@ export class Validator {
 
   _checkType (type, value) {
     const types = {
-      string: value => typeof value === 'string',
+      //Zenid update - start : so that the error message is not displayed in case of an empty string, || value === null added
+      string: value => typeof value === 'string' || value === null,
+      //Zenid update - end
       number: value => typeof value === 'number',
       integer: value => typeof value === 'number' && value === Math.floor(value),
       boolean: value => typeof value === 'boolean',

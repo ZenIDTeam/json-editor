@@ -1,6 +1,6 @@
 import { MultiSelectEditor } from '../multiselect.js'
 import { extend, hasOwnProperty } from '../../utilities.js'
-
+/* eslint-disable */
 export class ArraySelect2Editor extends MultiSelectEditor {
   setValue (value, initial) {
     if (this.select2_instance) {
@@ -22,11 +22,36 @@ export class ArraySelect2Editor extends MultiSelectEditor {
     if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2 && !this.select2_instance) {
       /* Get options, either global options from "this.defaults.options.select2" or */
       /* single property options from schema "options.select2" */
+
       options = this.expandCallbacks('select2', extend({}, {
         tags: true,
         width: '100%'
       }, this.defaults.options.select2 || {}, this.options.select2 || {}))
 
+/* todo this is probably not needed anymore, test
+//Zenid update - start - select2 multiselect does not work right now with json-editor, 
+                //and with usage with checkbox, this needed fix(nullpointer with select2 otherwise)
+                if (!this.schema.format == "checkbox") {
+                    this.select2 = window.jQuery(this.input).select2(options);
+                    
+                    var self = this;
+                    this.select2.on('select2-blur', function () {
+                        var val = self.select2.select2('val');
+                        self.value = val;
+                        self.onChange(true);
+                    });
+                    //Zenid update - start
+                    this.select2.on('change', function () {
+                        self.input.value = self.select2.select2('val');
+                        self.onInputChange();
+                    });
+                    //Zenid update - end
+                }                    
+                */
+      //Zenid update - start            
+      options.templateResult = this.renderItem;
+      //Zenid update - end
+      
       /* New items are allowed if option "tags" is true and items type is "string" */
       this.newEnumAllowed = options.tags = !!options.tags && this.schema.items && this.schema.items.type === 'string'
 

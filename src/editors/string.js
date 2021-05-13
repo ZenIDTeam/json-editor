@@ -1,6 +1,6 @@
 import { AbstractEditor } from '../editor.js'
 import { extend } from '../utilities.js'
-
+/* eslint-disable */
 export class StringEditor extends AbstractEditor {
   register () {
     super.register()
@@ -113,8 +113,43 @@ export class StringEditor extends AbstractEditor {
       }
       /* Normal text input */
     } else {
-      this.input_type = 'text'
+      //Zenid update - start - need to add numbertype so it has possibility to change numbers
+      if (this.schema.type === "number" || this.schema.type === "integer") {  
+          this.input_type = "number";
+      } else {
+          this.input_type = 'text';
+      } //Zenid update - end
       this.input = this.theme.getFormInputField(this.input_type)
+
+      //Zenid update - start - check minimal and maximal values and steps
+      let maxInt = 2147483647;
+      let minInt = -2147483648
+      let maxDecimal = 79228162514264337593543950335;
+      let minDecimal = -79228162514264337593543950335;
+
+      if (this.schema.type === 'integer') {
+          if (this.schema.maximum === undefined || this.schema.maximum > maxInt) {
+              this.schema.maximum = maxInt;
+          }
+          if (this.schema.minimum === undefined || this.schema.minimum < minInt) {
+              this.schema.minimum = minInt;
+          }
+
+          this.input.setAttribute('step', 1);
+      }
+
+      if (this.schema.type === 'number') {
+          if (this.schema.maximum === undefined || this.schema.maximum > maxDecimal) {
+              this.schema.maximum = maxDecimal;
+          }
+          if (this.schema.minimum === undefined || this.schema.minimum < minDecimal) {
+              this.schema.minimum = minDecimal;
+          }
+
+      }
+      this.input.setAttribute('min', this.schema.minimum);
+      this.input.setAttribute('max', this.schema.maximum);
+      //Zenid update - end      
     }
 
     /* minLength, maxLength, and pattern */
@@ -287,8 +322,12 @@ export class StringEditor extends AbstractEditor {
       return undefined
     }
     if (this.imask_instance && this.dependenciesFulfilled && this.options.imask.returnUnmasked) {
-      return this.imask_instance.unmaskedValue
-    } return super.getValue()
+      return this.imask_instance.unmaskedValue    
+    } 
+    //Zenid update - start - if string is empty, save null
+    //if (this.value === "") return null; - it looks this is not needed now
+    //Zenid update - end
+    return super.getValue()
   }
 
   enable () {

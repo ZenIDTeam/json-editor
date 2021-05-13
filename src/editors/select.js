@@ -1,6 +1,6 @@
 import { AbstractEditor } from '../editor.js'
 import { extend } from '../utilities.js'
-
+/* eslint-disable */
 export class SelectEditor extends AbstractEditor {
   setValue (value, initial) {
     /* Sanitize value before setting it */
@@ -21,6 +21,19 @@ export class SelectEditor extends AbstractEditor {
     else if (this.jsoneditor.options.show_errors === 'change') this.is_dirty = true
 
     this.input.value = this.enum_options[this.enum_values.indexOf(sanitized)]
+
+    /* TODO THIS IS PROBABLY ALREADY FIXED
+    //Zenid update - start
+    //this.input.value = this.enum_options[this.enum_values.indexOf(sanitized)];
+    var selectedValue = this.enum_options[this.enum_values.indexOf(sanitized)];
+    //if (this.select2) this.select2.select2('val', this.input.value);
+    if (this.select2) {
+        this.select2.val(selectedValue);
+        this.select2.trigger('change');
+    }
+    else this.input.value = selectedValue;
+    //Zenid update - end
+    */    
 
     this.value = sanitized
     this.onChange()
@@ -218,6 +231,15 @@ export class SelectEditor extends AbstractEditor {
     this.value = newVal
     this.onChange(true)
   }
+
+  //Zenid update - start - add empty field in select
+  renderItem(item) {
+    if (item.text === "" || item.text === null || item.text === undefined) {
+        return '\u200B'
+    }
+    else return item.text
+  }
+  //Zenid update - end
 
   onWatchedFieldChange () {
     let vars; let j

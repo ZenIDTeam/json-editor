@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { extend, hasOwnProperty } from './utilities.js'
 
 /**
@@ -285,7 +286,8 @@ export class AbstractEditor {
     if (!this.no_link_holder) {
       this.link_holder = this.theme.getLinksHolder()
       /* if description element exists, insert the link before */
-      if (typeof this.description !== 'undefined') this.description.parentNode.insertBefore(this.link_holder, this.description)
+      if (typeof this.description !== 'undefined' && this.description.parentNode !== null) 
+        this.description.parentNode.insertBefore(this.link_holder, this.description)
       /* otherwise just insert link at bottom of container */
       else this.container.appendChild(this.link_holder)
       if (this.schema.links) {

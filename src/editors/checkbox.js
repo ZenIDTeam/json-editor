@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AbstractEditor } from '../editor.js'
 
 export class CheckboxEditor extends AbstractEditor {
@@ -32,6 +33,7 @@ export class CheckboxEditor extends AbstractEditor {
     }
 
     if (this.schema.description) this.description = this.theme.getFormInputDescription(this.translateProperty(this.schema.description))
+    //else this.description = "-";
     if (this.options.infoText && !this.options.compact) this.infoButton = this.theme.getInfoButton(this.translateProperty(this.options.infoText))
     if (this.options.compact) this.container.classList.add('compact')
 
