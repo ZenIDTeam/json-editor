@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AbstractEditor } from '../editor.js'
 import { extend, trigger } from '../utilities.js'
 import rules from './array.css.js'
@@ -164,12 +165,12 @@ export class ArrayEditor extends AbstractEditor {
 
   getItemTitle () {
     if (!this.item_title) {
-      if (this.schema.items && !Array.isArray(this.schema.items)) {
-        const tmp = this.jsoneditor.expandRefs(this.schema.items)
-        this.item_title = this.translateProperty(tmp.title) || this.translate('default_array_item_title')
-      } else {
-        this.item_title = this.translate('default_array_item_title')
-      }
+       if (this.schema.items && !Array.isArray(this.schema.items)) {
+         const tmp = this.jsoneditor.expandRefs(this.schema.items)
+         this.item_title = this.translateProperty(tmp.title) || this.translate('default_array_item_title')
+       } else {
+         this.item_title = this.translate('default_array_item_title')
+       }      
     }
     return this.cleanText(this.item_title)
   }
@@ -204,7 +205,10 @@ export class ArrayEditor extends AbstractEditor {
     schema = this.jsoneditor.expandRefs(schema)
 
     this.item_info[stringified] = {
-      title: this.translateProperty(schema.title) || this.translate('default_array_item_title'),
+      //Zenid update - start (we do not want "item 1" etc. to be displayed)
+      //title: this.translateProperty(schema.title) || this.translate('default_array_item_title'),
+      title: this.translateProperty(schema.title) || ' ',
+      //Zenid update - end
       default: schema.default,
       width: 12,
       child_editors: schema.properties || schema.items
@@ -217,7 +221,10 @@ export class ArrayEditor extends AbstractEditor {
     const itemInfo = this.getItemInfo(i)
     let schema = this.getItemSchema(i)
     schema = this.jsoneditor.expandRefs(schema)
-    schema.title = `${itemInfo.title} ${i + 1}`
+    //Zenid update - start (we do not want "item 1" etc. to be displayed)
+    //schema.title = `${itemInfo.title} ${i + 1}`
+    schema.title = ' ';
+    //Zenid update - end
 
     const editor = this.jsoneditor.getEditorClass(schema)
 
@@ -744,7 +751,9 @@ export class ArrayEditor extends AbstractEditor {
   }
 
   _createRemoveAllRowsButton () {
-    const button = this.getButton('button_delete_all', 'delete', 'button_delete_all_title')
+    //Zenid update - start (deleteall)
+    const button = this.getButton('button_delete_all', 'deleteall', 'button_delete_all_title')
+    //Zenid update - end
     button.classList.add('json-editor-btntype-deleteall')
     button.addEventListener('click', (e) => {
       e.preventDefault()

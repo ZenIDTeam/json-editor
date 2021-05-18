@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ArrayEditor } from './array.js'
 import { extend, trigger } from '../utilities.js'
 
@@ -489,7 +490,9 @@ export class TableEditor extends ArrayEditor {
   }
 
   _createRemoveAllRowsButton () {
-    const button = this.getButton('button_delete_all', 'delete', 'button_delete_all_title')
+    //Zenid update - start (deleteall)
+    const button = this.getButton('button_delete_all', 'deleteall', 'button_delete_all_title')
+    //Zenid update - end
     button.classList.add('json-editor-btntype-deleteall')
     button.addEventListener('click', (e) => {
       e.preventDefault()

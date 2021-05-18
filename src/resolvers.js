@@ -80,7 +80,7 @@ const oneOf = schema => {
   if (schema.anyOf) {
     //This function by default ensures that anyOf and oneOf items from jsonschema will be displayed as select box (return "multiple"). Zenid update, adjusted for nullables: for the description of int? and double?, we are using the anyOf jsonschema structure, in which one item is null and the second one is integer or number (see also e.g. https://stackoverflow.com/questions/22565005/json-schema-validate-a-number-or-null-value). In such a case, this function will return integer or number (and not a select box).
     if (schema.anyOf.some(item => item.type === "null") 
-    && schema.anyOf.some(item => item.type === "integer" || item.type === "number")) {
+    && schema.anyOf.some(item => item.type === "integer" || item.type === "number" || item.type === "boolean")) {
       var type = schema.anyOf.filter(item => item.type !== "null")[0].type;
       return type;
     }
