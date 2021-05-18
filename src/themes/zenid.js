@@ -120,7 +120,7 @@ export class zenidTheme extends AbstractTheme {
           ctrl.appendChild(input)
           ctrl.style.padding = '4px 0 8px 0';
         }
-  
+        if (description) ctrl.appendChild(description)
         return ctrl
       }
   

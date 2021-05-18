@@ -405,11 +405,16 @@ export class AbstractTheme {
     }
     if (icon) {
       button.appendChild(icon)
-      if (!onlyicon) {text = ` ${text}`}
+      /*Zenid update start*/
+      if (!onlyicon) {text = ` ${text}`}  else { text = ''} 
+      /*Zenid update end*/
     }
     if (!this.jsoneditor.options.iconlib || !this.jsoneditor.options.remove_button_labels || !icon) {
       const spanEl = document.createElement('span')
-      text = text || title || '.'
+      /*Zenid update start*/ 
+      if (!onlyicon) text = text || title || '.'
+      else text = '' 
+      /*Zenid update end*/
       spanEl.appendChild(document.createTextNode(text))
       button.appendChild(spanEl)
     }

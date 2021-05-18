@@ -1,3 +1,8 @@
+// import { materializeTheme } from './materializeTheme'
+/* eslint-disable */
+
+
+import rules from './html.css.js'
 import { AbstractTheme } from '../theme.js'
 
 export class materializeTheme extends AbstractTheme {
@@ -129,8 +134,11 @@ export class materializeTheme extends AbstractTheme {
     const el = document.createElement('div')
     el.classList.add('grey-text')
     /* el.style.marginTop = '-15px' */
-    if (window.DOMPurify) el.innerHTML = window.DOMPurify.sanitize(text)
-    else el.textContent = this.cleanText(text)
+    if (window.DOMPurify) {
+      el.innerHTML = window.DOMPurify.sanitize(text)}      
+    else {
+      el.textContent = this.cleanText(text)}
+      
     return el
   }
 
@@ -324,7 +332,8 @@ export class materializeTheme extends AbstractTheme {
     /* Get the parent element. Should most likely be a <div class="input-field" ... />. */
     const parent = input.parentNode
 
-    if (!parent) return
+    if (!parent) {
+      return}      
 
     /* Remove any previous error. */
     this.removeInputError(input)
@@ -345,7 +354,9 @@ export class materializeTheme extends AbstractTheme {
     /* Get the parent element. Should most likely be a <div class="input-field" ... />. */
     const parent = input.parentElement
 
-    if (!parent) return
+    if (!parent) {
+      return
+    }
 
     /* Remove all elements having class .error-text. */
     const els = parent.getElementsByClassName('error-text')
@@ -365,7 +376,7 @@ export class materializeTheme extends AbstractTheme {
    * @return {HTMLElement} The DOM element.
    * @see http://materializecss.com/forms.html#select
    */
-  getSelectInput (options, multiple) {
+  getSelectInpu (options, multiple) {
     const select = super.getSelectInput(options)
     select.classList.add('browser-default')
     return select
@@ -373,7 +384,7 @@ export class materializeTheme extends AbstractTheme {
 
   /**
    * Gets a textarea DOM element.
-   *
+     *
    * @returns {HTMLElement} The DOM element.
    * @see http://materializecss.com/forms.html#textarea
    */
@@ -423,4 +434,5 @@ export class materializeTheme extends AbstractTheme {
 }
 
 /* Custom stylesheet rules. format: "selector" : "CSS rules" */
-materializeTheme.rules = { 'div[data-schemaid="root"]:after': 'position:relative;color:red;margin:10px 0;font-weight:600;display:block;width:100%;text-align:center;content:"This is an old JSON-Editor 1.x Theme and might not display elements correctly when used with the 2.x version"' }
+// materializeTheme.rules = { 'div[data-schemaid="root"]:after': 'position:relative;color:red;margin:10px 0;font-weight:600;display:block;width:100%;text-align:center;content:"This is an old JSON-Editor 1.x Theme and might not display elements correctly when used with the 2.x version"' }
+materializeTheme.rules = rules
