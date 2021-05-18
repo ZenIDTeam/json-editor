@@ -325,7 +325,7 @@ export class StringEditor extends AbstractEditor {
       return this.imask_instance.unmaskedValue    
     } 
     //Zenid update - start - if string is empty, save null
-    //if (this.value === "") return null; - it looks this is not needed now
+    if (this.value === "") return null; 
     //Zenid update - end
     return super.getValue()
   }

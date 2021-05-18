@@ -62,7 +62,15 @@ export class SelectEditor extends AbstractEditor {
   }
 
   typecast (value) {
-    if (this.schema.type === 'boolean') return value === 'undefined' || value === undefined ? undefined : !!value
+    //Zenid change - start - if schema is boolean, but is not required = nullable = return null;
+    if (this.schema.type === 'boolean') {
+      var notdefined = value === 'undefined' || value === undefined || value === null || value === "null" || value === "";
+      if (!this.isRequired() && notdefined) {
+        return null;
+      }
+      return notdefined ? undefined : !!value
+    }
+    //Zenid change - end
     else if (this.schema.type === 'number') return 1 * value || 0
     else if (this.schema.type === 'integer') return Math.floor(value * 1 || 0)
     else if (this.schema.enum && value === undefined) return undefined
@@ -102,13 +110,15 @@ export class SelectEditor extends AbstractEditor {
       /* Boolean */
     } else if (this.schema.type === 'boolean') {
       this.enum_display = (this.schema.options && this.schema.options.enum_titles) || ['true', 'false']
-      this.enum_options = ['1', '']
+      this.enum_options = ['1', '0']
       this.enum_values = [true, false]
 
       if (!this.isRequired()) {
-        this.enum_display.unshift(' ')
-        this.enum_options.unshift('undefined')
-        this.enum_values.unshift(undefined)
+        //Zenid update - start - change to send null, not undefined
+        this.enum_display.unshift('\u200B')
+        this.enum_options.unshift('')//null
+        this.enum_values.unshift(null)
+        //Zenid update - end
       }
       /* Dynamic Enum */
     } else if (this.schema.enumSource) {

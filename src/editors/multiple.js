@@ -103,11 +103,14 @@ export class MultipleEditor extends AbstractEditor {
     //Nullable number/integer is solved via anyOf field [integer/number, null]. Here we are checking whether the schema contains anyOf; if yes, we use number (or integer) as a schema.type and schema.required is set to false 
     if (schema.anyOf 
         && schema.anyOf.some(item => item.type === "null") 
-        && schema.anyOf.some(item => item.type === "integer" || item.type === "number")
+        && schema.anyOf.some(item => item.type === "integer" || item.type === "number" || item.type === "boolean")
     ) {
         let innertype = schema.anyOf.filter(item => item.type !== "null")[0].type;
         delete schema.anyOf;
         schema.type = innertype;
+        if (schema.type === "boolean") {
+          schema.format = 'select2'
+        }
         schema.required = false;
       }
     //Zenid update - end

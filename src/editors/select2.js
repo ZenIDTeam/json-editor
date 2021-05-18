@@ -18,6 +18,15 @@ export class Select2Editor extends SelectEditor {
     } else super.setValue(value, initial)
   }
 
+  getValue () {    
+    if (this.value === "") {
+      if (!this.isRequired()) return null;          
+      //We need null to be returned. Otherwise default value on server site is used (and not null which we want).
+    }    
+    return super.getValue();
+  }
+
+
   afterInputReady () {
     if (window.jQuery && window.jQuery.fn && window.jQuery.fn.select2 && !this.select2_instance) {
       /* Get options, either global options from "this.defaults.options.select2" or */
@@ -51,7 +60,10 @@ export class Select2Editor extends SelectEditor {
 
   updateValue (value) {
     let sanitized = this.enum_values[0]
-    value = this.typecast(value || '')
+    //Zenid update - start
+    value = this.typecast(value)
+    if (value === undefined) value = '' //do not delete null
+    //Zenid update - end
     if (!this.enum_values.includes(value)) {
       if (this.newEnumAllowed) {
         sanitized = this.addNewOption(value) ? value : sanitized
