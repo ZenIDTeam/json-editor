@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AbstractIconLib } from '../iconlib.js'
 
 const iconPrefix = 'fas fa-'
@@ -5,6 +6,9 @@ const mapping = {
   collapse: 'caret-down',
   expand: 'caret-right',
   delete: 'trash',
+  //Zenid update - start
+  deleteall: 'trash',
+  //Zenid update - end
   edit: 'pen',
   add: 'plus',
   subtract: 'minus',

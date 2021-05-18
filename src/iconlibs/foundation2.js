@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AbstractIconLib } from '../iconlib.js'
 
 const iconPrefix = 'foundicon-'
@@ -5,6 +6,9 @@ const mapping = {
   collapse: 'minus',
   expand: 'plus',
   delete: 'remove',
+  //Zenid update - start
+  deleteall: 'trash',
+  //Zenid update - end
   edit: 'edit',
   add: 'add-doc',
   cancel: 'error',

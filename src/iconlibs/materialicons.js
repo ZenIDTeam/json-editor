@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AbstractIconLib } from '../iconlib.js'
 
 const iconClass = 'material-icons'
@@ -6,6 +7,9 @@ const mapping = {
   collapse: 'arrow_drop_up',
   expand: 'arrow_drop_down',
   delete: 'delete',
+  //Zenid update - start
+  deleteall: 'trash',
+  //Zenid update - end
   edit: 'edit',
   add: 'add',
   subtract: 'remove',
