@@ -73,6 +73,7 @@ export class ArraySelect2Editor extends MultiSelectEditor {
   }
 
   updateValue (value) {
+    if (value === null) value = [];
     value = [].concat(value)
     let changed = false; const newValue = []
     for (let i = 0; i < value.length; i++) {

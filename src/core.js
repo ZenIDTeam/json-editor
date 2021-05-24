@@ -379,11 +379,12 @@ export class JSONEditor {
     }
     Object.keys(rules).forEach(selector => {
       const sel = themeName === 'default' ? selector : `${qualifier}[data-theme="${themeName}"] ${selector}`
-
+      const val = rules[selector]
+      const uri = decodeURIComponent(val)
       // all browsers, except IE before version 9
-      if (sheet.insertRule) sheet.insertRule(sel + ' {' + decodeURIComponent(rules[selector]) + '}', 0)
+      if (sheet.insertRule) sheet.insertRule(sel + ' {' + uri + '}', 0)
       // Internet Explorer before version 9
-      else if (sheet.addRule) sheet.addRule(sel, decodeURIComponent(rules[selector]), 0)
+      else if (sheet.addRule) sheet.addRule(sel, uri, 0)
     })
   }
 
