@@ -73,7 +73,9 @@ export class ArraySelect2Editor extends MultiSelectEditor {
   }
 
   updateValue (value) {
+    //Zenid update - start
     if (value === null) value = [];
+    //Zenid update - end
     value = [].concat(value)
     let changed = false; const newValue = []
     for (let i = 0; i < value.length; i++) {

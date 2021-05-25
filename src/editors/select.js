@@ -68,7 +68,7 @@ export class SelectEditor extends AbstractEditor {
       if (!this.isRequired() && notdefined) {
         return null;
       }
-      return notdefined ? undefined : !!value
+      return notdefined ? undefined : (value == "0" || value == 0) ? false : true;
     }
     //Zenid change - end
     else if (this.schema.type === 'number') return 1 * value || 0
