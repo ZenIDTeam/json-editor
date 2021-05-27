@@ -560,7 +560,12 @@ export class ObjectEditor extends AbstractEditor {
       this.controls = this.theme.getButtonHolder()
       this.controls.classList.add('je-object__controls')
 
-      this.container.appendChild(this.title)
+      //Zenid update - start (to ensure not to show the header for top object (generated 'ROOT' was shown in most cases))
+      if (this.parent !== undefined) //Zenid update - end
+      {
+        this.container.appendChild(this.title)
+      }
+      
       this.container.appendChild(this.controls)
       this.container.classList.add('je-object__container')
 
